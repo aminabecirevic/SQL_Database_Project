@@ -121,7 +121,7 @@ WHERE p2.ProductID <> p.ProductID
 GROUP BY p2.Name, b2.Name, p.Name, b.Name
 ORDER BY TotalQuantityTogether DESC;
 
--- Najprodavaniji po parama
+-- Najprodavaniji po novcu
 
 SELECT p.Name AS Top1Product, b.Name AS Top1Brand, p2.Name AS Product, b2.Name AS Brand,
 SUM(oi2.Quantity * p2.Price) AS TotalAmountTogether, SUM(oi2.Quantity) AS TotalQuantity,
@@ -144,11 +144,6 @@ GROUP BY p2.Name, b2.Name, p.Name, b.Name
 ORDER BY TotalQuantity DESC;
 
 
-SELECT p.Name AS ProductName, p.Color AS Color
-FROM AdventureWorksLT2022.SalesLT.SalesOrderDetail sod
-JOIN AdventureWorksLT2022.SalesLT.Product p ON sod.ProductID = p.ProductID AND p.Color = 'Red'
-
-
 SELECT *
 FROM AdventureWorksLT2022.SalesLT.Product p
 JOIN AdventureWorksLT2022.SalesLT.SalesOrderDetail sod ON p.ProductID = sod.ProductID and p.Color = 'Blue'
@@ -156,26 +151,6 @@ JOIN AdventureWorksLT2022.SalesLT.SalesOrderDetail sod ON p.ProductID = sod.Prod
 SELECT *
 FROM AdventureWorksLT2022.SalesLT.Product p
 JOIN AdventureWorksLT2022.SalesLT.SalesOrderDetail sod ON p.ProductID = sod.ProductID
-WHERE p.Color = 'Blue'
-
-
-SELECT *
-FROM AdventureWorksLT2022.SalesLT.Product p
-LEFT JOIN AdventureWorksLT2022.SalesLT.SalesOrderDetail sod ON p.ProductID = sod.ProductID AND p.Color = 'Blue'
-
-SELECT *
-FROM AdventureWorksLT2022.SalesLT.Product p
-LEFT JOIN AdventureWorksLT2022.SalesLT.SalesOrderDetail sod ON p.ProductID = sod.ProductID 
-WHERE p.Color = 'Blue'
-
-
-SELECT *
-FROM AdventureWorksLT2022.SalesLT.Product p
-RIGHT JOIN AdventureWorksLT2022.SalesLT.SalesOrderDetail sod ON p.ProductID = sod.ProductID AND p.Color = 'Blue'
-
-SELECT *
-FROM AdventureWorksLT2022.SalesLT.Product p
-RIGHT JOIN AdventureWorksLT2022.SalesLT.SalesOrderDetail sod ON p.ProductID = sod.ProductID 
 WHERE p.Color = 'Blue'
 
 
@@ -197,103 +172,3 @@ SELECT p.ProductID, p.Name, p.Color, sod.SalesOrderID, sod.OrderQty
 FROM AdventureWorksLT2022.SalesLT.Product p
 RIGHT JOIN AdventureWorksLT2022.SalesLT.SalesOrderDetail sod ON p.ProductID = sod.ProductID
 WHERE p.Color = 'Blue'
-
-
-
-
--- provjera
-SELECT p.Name AS Top1Product, pm.Name AS Top1Model, p2.Name AS Product, pm2.Name AS ProductModel,
-SUM(sod2.OrderQty * p2.ListPrice) AS TotalAmountTogether, COUNT(DISTINCT sod2.SalesOrderID) AS OrdersTogether
-FROM AdventureWorksLT2022.SalesLT.SalesOrderDetail sod
-JOIN (
-    SELECT TOP 1 sodi.ProductID
-    FROM AdventureWorksLT2022.SalesLT.SalesOrderDetail sodi
-    JOIN AdventureWorksLT2022.SalesLT.Product pi ON sodi.ProductID = pi.ProductID
-    GROUP BY sodi.ProductID
-    ORDER BY SUM(sodi.OrderQty * pi.ListPrice) DESC
-) AS np ON sod.ProductID = np.ProductID
-JOIN AdventureWorksLT2022.SalesLT.Product p ON sod.ProductID = p.ProductID
-LEFT JOIN AdventureWorksLT2022.SalesLT.ProductModel pm ON p.ProductModelID = pm.ProductModelID
-JOIN AdventureWorksLT2022.SalesLT.SalesOrderDetail sod2 ON sod.SalesOrderID = sod2.SalesOrderID
-JOIN AdventureWorksLT2022.SalesLT.Product p2 ON sod2.ProductID = p2.ProductID
-LEFT JOIN AdventureWorksLT2022.SalesLT.ProductModel pm2 ON p2.ProductModelID = pm2.ProductModelID
-WHERE sod2.ProductID <> sod.ProductID
-GROUP BY p2.Name, pm2.Name, p.Name, pm.Name
-ORDER BY TotalAmountTogether DESC;
-
-SELECT TOP 1 p.Name, SUM(sod.OrderQty) AS TotalSold
-FROM AdventureWorksLT2022.SalesLT.SalesOrderDetail sod
-JOIN AdventureWorksLT2022.SalesLT.Product p ON sod.ProductID = p.ProductID
-Group by p.Name
-ORDER BY SUM(sod.OrderQty) DESC;
-
-SELECT p.Name AS Top1Product, p2.Name AS Product, SUM(sod2.OrderQty) AS TotalQuantityTogether, COUNT(DISTINCT sod2.SalesOrderID) AS OrdersTogether
-FROM AdventureWorksLT2022.SalesLT.SalesOrderDetail sod
-JOIN (
-    SELECT TOP 1 ProductID
-    FROM AdventureWorksLT2022.SalesLT.SalesOrderDetail
-    GROUP BY ProductID
-    ORDER BY SUM(OrderQty) DESC
-) AS np ON sod.ProductID = np.ProductID
-JOIN AdventureWorksLT2022.SalesLT.Product p ON sod.ProductID = p.ProductID
-JOIN AdventureWorksLT2022.SalesLT.SalesOrderDetail sod2 ON sod.SalesOrderID = sod2.SalesOrderID
-JOIN AdventureWorksLT2022.SalesLT.Product p2 ON sod2.ProductID = p2.ProductID
-WHERE sod2.ProductID <> sod.ProductID
-GROUP BY p2.Name, p.Name
-ORDER BY TotalQuantityTogether DESC;
-
-
-
---provjera 
-SELECT b.Name AS BrandName, SUM(o.TotalAmount) AS TotalOrderAmount
-FROM WebshopDB.dbo.Orders o
-JOIN WebshopDB.dbo.OrderItem oi ON o.OrderID = oi.OrderID
-JOIN WebshopDB.dbo.Product pr ON oi.ProductID = pr.ProductID
-JOIN WebshopDB.dbo.Brand b ON pr.BrandID = b.BrandID
-LEFT JOIN WebshopDB.dbo.Payment p ON o.PaymentID = p.PaymentID
-GROUP BY b.Name
-ORDER BY b.Name;
-
-SELECT pm.Name, SUM(h.TotalDue)
-FROM AdventureWorksLT2022.SalesLT.SalesOrderHeader h
-JOIN AdventureWorksLT2022.SalesLT.SalesOrderDetail d ON h.SalesOrderID = d.SalesOrderID
-JOIN AdventureWorksLT2022.SalesLT.Product p ON d.ProductID = p.ProductID
-JOIN AdventureWorksLT2022.SalesLT.ProductModel pm ON p.ProductModelID = pm.ProductModelID
-GROUP BY pm.Name
-ORDER BY pm.Name
-
-
-SELECT p.Name, COUNT(sod.SalesOrderDetailID), SUM (sod.OrderQty) 
-FROM AdventureWorksLT2022.SalesLT.Product p
-JOIN AdventureWorksLT2022.SalesLT.SalesOrderDetail sod ON p.ProductID = sod.ProductID
-WHERE p.NAME = 'Hydration Pack - 70 oz.'
-GROUP BY p.Name
-
-SELECT TOP 5 c.CustomerID, c.FirstName, c.LastName, SUM(soh.TotalDue) AS TotalSpent
-FROM AdventureWorksLT2022.SalesLT.Customer c
-JOIN AdventureWorksLT2022.SalesLT.SalesOrderHeader soh ON c.CustomerID = soh.CustomerID
-GROUP BY c.CustomerID, c.FirstName, c.LastName
-ORDER BY TotalSpent DESC;
-
-SELECT a.CountryRegion, COUNT(DISTINCT c.CustomerID) AS NumberOfUsers
-FROM AdventureWorksLT2022.SalesLT.Customer c
-JOIN AdventureWorksLT2022.SalesLT.SalesOrderHeader soh ON c.CustomerID = soh.CustomerID
-JOIN AdventureWorksLT2022.SalesLT.Address a ON soh.ShipToAddressID = a.AddressID
-GROUP BY a.CountryRegion
-ORDER BY NumberOfUsers DESC;
-
-
-SELECT p.Name, COUNT(DISTINCT soh.SalesOrderID) AS NumberOfOrders
-FROM AdventureWorksLT2022.SalesLT.SalesOrderHeader soh
-JOIN AdventureWorksLT2022.SalesLT.SalesOrderDetail sod ON soh.SalesOrderID = sod.SalesOrderID
-JOIN AdventureWorksLT2022.SalesLT.Product p ON sod.ProductID = p.ProductID
-GROUP BY p.Name
-ORDER BY NumberOfOrders DESC
-
-SELECT a.AddressID, p.Name, COUNT(DISTINCT o.OrderID) AS NumberOfOrders
-FROM WebshopDB.dbo.Orders o 
-JOIN WebshopDB.dbo.OrderItem oi ON o.OrderID = oi.OrderID
-JOIN WebshopDB.dbo.Product p ON oi.ProductID = p.ProductID
-JOIN WebshopDB.dbo.Address a ON o.AddressID = a.AddressID
-GROUP BY p.Name, a.AddressID
-ORDER BY NumberOfOrders DESC;

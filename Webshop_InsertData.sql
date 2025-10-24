@@ -1,19 +1,5 @@
 USE WebshopDB;
 
-DELETE FROM WebshopDB.dbo.OrderItem;
-DELETE FROM WebshopDB.dbo.Orders;
-DELETE FROM WebshopDB.dbo.Address;
-DELETE FROM WebshopDB.dbo.City;
-DELETE FROM WebshopDB.dbo.Country;
-DELETE FROM WebshopDB.dbo.Users;
-DELETE FROM WebshopDB.dbo.ProductGroup;
-DELETE FROM WebshopDB.dbo.SubCategory;
-DELETE FROM WebshopDB.dbo.Category;
-DELETE FROM WebshopDB.dbo.Brand;
-DELETE FROM WebshopDB.dbo.Product;
-DELETE FROM WebshopDB.dbo.Payment;
-
-
 INSERT INTO WebshopDB.dbo.Country (Name)
 SELECT DISTINCT CountryRegion
 FROM AdventureWorksLT2022.SalesLT.Address;
@@ -359,16 +345,6 @@ SELECT SUM(SalesOrderID)
 FROM AdventureWorksLT2022.SalesLT.SalesOrderHeader;
 SELECT SUM(AWSalesOrderID)
 FROM WebshopDB.dbo.Orders;
-
-
-/*INSERT INTO WebshopDB.dbo.Orders (OrderDate, Status, TotalAmount, UserID, AddressID, AWSalesOrderID, AWCustomerID, PaymentID)
-SELECT soh.OrderDate, soh.Status, soh.TotalDue, u.UserID, a.AddressID, soh.SalesOrderID, u.AWCustomerID, p.PaymentID
-FROM AdventureWorksLT2022.SalesLT.SalesOrderHeader soh
-JOIN WebshopDB.dbo.Users u ON u.AWCustomerID = soh.CustomerID
-JOIN WebshopDB.dbo.Address a ON a.AWAddressID = soh.ShipToAddressID
-JOIN WebshopDB.dbo.Orders o ON o.AWSalesOrderID = soh.SalesOrderID
-LEFT JOIN WebshopDB.dbo.Payment p ON p.OrderID = o.OrderID;
-SELECT * FROM Orders;*/
 
 
 INSERT INTO WebshopDB.dbo.OrderItem (Quantity, UnitPrice, OrderID, ProductID, AWSalesOrderDetailID, AWSalesOrderID, AWProductID)

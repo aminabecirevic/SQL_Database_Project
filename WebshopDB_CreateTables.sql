@@ -1,22 +1,6 @@
 CREATE DATABASE WebshopDB;
 USE WebshopDB;
 
-DELETE FROM Users;
-DROP TABLE Users;
-
-DROP TABLE WebshopDB.dbo.OrderItem;
-DROP TABLE WebshopDB.dbo.Orders;
-DROP TABLE WebshopDB.dbo.Address;
-DROP TABLE WebshopDB.dbo.City;
-DROP TABLE WebshopDB.dbo.Country;
-DROP TABLE WebshopDB.dbo.Users;
-DROP TABLE WebshopDB.dbo.ProductGroup;
-DROP TABLE WebshopDB.dbo.SubCategory;
-DROP TABLE WebshopDB.dbo.Payment;
-DROP TABLE WebshopDB.dbo.Category;
-DROP TABLE WebshopDB.dbo.Brand;
-DROP TABLE WebshopDB.dbo.Product;
-
 CREATE TABLE Users (
     UserID INT PRIMARY KEY IDENTITY,
     FirstName NVARCHAR(50) NOT NULL,
