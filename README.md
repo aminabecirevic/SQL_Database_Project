@@ -6,7 +6,8 @@ Ovaj projekat prikazuje kreiranje i upravljanje bazom podataka u **SQL Server Ma
 - **WebshopDB_CreateTables.sql** – skripta za kreiranje svih tabela i relacija  
 - **Webshop_InsertData.sql** – skripta za unos početnih podataka u tabele  
 - **Webshop_Reports_Queries.sql** – SQL upiti korišteni za generisanje izvještaja  
-- **Webshop_ProcedureConfirmOrder.sql** – stored procedure za automatizovane radnje i upite  
+- **Webshop_ProcedureConfirmOrder.sql** – stored procedura za potvrdu narudžbe
+- **Webshop_ProcedureUpdateOrderItemQuantity.sql** – stored procedura za update količine
 
 ## Korištene tehnologije
 - Microsoft SQL Server  
@@ -20,7 +21,8 @@ Ovaj projekat prikazuje kreiranje i upravljanje bazom podataka u **SQL Server Ma
    - `Webshop_CreateTables.sql`  
    - `Webshop_InsertData.sql`  
    - `Webshop_Reports_Queries.sql`  
-   - `Webshop_ProcedureConfirmOrder.sql`  
+   - `Webshop_ProcedureConfirmOrder.sql`
+   - `Webshop_ProcedureUpdateOrderItemQuantity.sql`  
 4. Po potrebi izmijeni nazive tabela ili sheme prema svom okruženju.
 
 ---
